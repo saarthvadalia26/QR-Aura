@@ -106,7 +106,7 @@ async function generateBatch() {
     a.click();
     
     showLoader(false);
-    alert(`Successfully generated ${lines.length} QR codes!`);
+    showNotification(`Successfully generated ${lines.length} QR codes!`, "success");
 }
 
 // Helper to create customized QR (API + Logo Merge)
@@ -171,12 +171,37 @@ scanInput.onchange = async (e) => {
                 <p>Scanned Content:</p>
                 <a href="${code.data}" target="_blank">${code.data}</a>
             </div>`;
+            showNotification("QR Code scanned successfully!", "success");
         } else {
             scanResult.innerHTML = `<p style="color: #ef4444;">Could not detect a QR code. Try a clearer image.</p>`;
+            showNotification("No QR code found in image.", "error");
         }
     };
     reader.readAsDataURL(file);
 };
+
+// --- Notifications (Sonner-style) ---
+function showNotification(message, type = "success") {
+    const container = document.getElementById("notificationContainer");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    
+    const icon = type === "success" 
+        ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+        : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+
+    toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <div class="toast-message">${message}</div>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = "toastFadeOut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards";
+        setTimeout(() => toast.remove(), 400);
+    }, 4000);
+}
 
 // --- Utils ---
 function showLoader(show) {
