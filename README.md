@@ -1,6 +1,6 @@
 # QR Aura 🔮 — The Premium QR Experience
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/saarthvadalia26/QR-Aura/graphs/commit-activity)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](http://makeapullrequest.com)
 
 **QR Aura** is not just another QR code generator. It's a high-performance, aesthetically pleasing web application designed to transform boring links into stunning, brand-aligned scannable art. Built with zero dependencies and a focus on premium user experience.
@@ -8,7 +8,7 @@
 ---
 
 ## 🚀 Live Demo
-You can experience the premium aura here: **[Insert Your GitHub Pages Link Here]**
+You can experience the premium aura here: **[https://saarthvadalia26.github.io/QR-Aura/](https://saarthvadalia26.github.io/QR-Aura/)**
 
 ---
 
@@ -31,14 +31,6 @@ You can experience the premium aura here: **[Insert Your GitHub Pages Link Here]
 
 ---
 
-## 📸 Preview
-
-<div align="center">
-  <img src="https://via.placeholder.com/800x450/0f172a/f8fafc?text=QR+Aura+Interface+Preview" alt="QR Aura Preview" width="100%">
-</div>
-
----
-
 ## 🏁 Getting Started
 
 ### Prerequisites
@@ -47,11 +39,11 @@ All you need is a modern web browser. No installation required.
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/qr-aura.git
+   git clone https://github.com/saarthvadalia26/QR-Aura.git
    ```
 2. Navigate to the project folder:
    ```bash
-   cd qr-aura
+   cd QR-Aura
    ```
 3. Open `index.html` in your favorite browser.
 
@@ -59,10 +51,10 @@ All you need is a modern web browser. No installation required.
 
 ## 📂 Project Structure
 ```text
-qr-aura/
+QR-Aura/
 ├── index.html    # Main entry point & semantic structure
 ├── style.css     # Premium design system & animations
-├── script.js    # Logic, Canvas engine & History management
+├── script.js     # Logic, Canvas engine & History management
 ├── README.md     # Project documentation
 └── .gitignore    # Git optimization
 ```
@@ -82,7 +74,7 @@ Contributions are what make the open source community such an amazing place to l
 
 <div align="center">
   <p>Built with ❤️ for a better web.</p>
-  <a href="https://github.com/YOUR_USERNAME">
+  <a href="https://github.com/saarthvadalia26">
     <img src="https://img.shields.io/badge/Follow-GitHub-181717?style=for-the-badge&logo=github" alt="Follow on GitHub">
   </a>
 </div>
