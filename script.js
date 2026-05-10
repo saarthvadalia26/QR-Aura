@@ -116,9 +116,7 @@ async function createQRUrl(text) {
     const bg = bgColor.value.replace("#", "");
     const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}&color=${fg}&bgcolor=${bg}`;
 
-    if (!selectedLogo) return apiUrl;
-
-    // Merge logic
+    // Always use canvas to ensure a local DataURL for reliable downloads
     const canvas = document.createElement("canvas");
     canvas.width = size;
     canvas.height = size;
@@ -127,13 +125,15 @@ async function createQRUrl(text) {
     const qrImg = await loadImage(apiUrl);
     ctx.drawImage(qrImg, 0, 0, size, size);
 
-    const logoImg = await loadImage(selectedLogo);
-    const lSize = size * 0.2;
-    const pos = (size - lSize) / 2;
+    if (selectedLogo) {
+        const logoImg = await loadImage(selectedLogo);
+        const lSize = size * 0.2;
+        const pos = (size - lSize) / 2;
 
-    ctx.fillStyle = bgColor.value;
-    ctx.fillRect(pos - 5, pos - 5, lSize + 10, lSize + 10);
-    ctx.drawImage(logoImg, pos, pos, lSize, lSize);
+        ctx.fillStyle = bgColor.value;
+        ctx.fillRect(pos - 5, pos - 5, lSize + 10, lSize + 10);
+        ctx.drawImage(logoImg, pos, pos, lSize, lSize);
+    }
 
     return canvas.toDataURL("image/png");
 }
