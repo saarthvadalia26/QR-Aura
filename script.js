@@ -50,6 +50,14 @@ tabBtns.forEach(btn => {
         resultBox.style.display = "none";
         generateBtn.style.display = mode === "scan" ? "none" : "flex";
         generateBtn.querySelector("span").innerText = mode === "batch" ? "Generate Batch ZIP" : "Generate QR Code";
+
+        // Hide customization options in scan mode
+        const customGrid = document.querySelector(".customization-grid");
+        if (mode === "scan") {
+            customGrid.style.display = "none";
+        } else {
+            customGrid.style.display = "grid";
+        }
     };
 });
 
