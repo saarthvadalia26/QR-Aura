@@ -8,7 +8,7 @@
 ---
 
 ## 🚀 Live Demo
-You can experience the premium aura here: **[https://saarthvadalia26.github.io/QR-Aura/](https://saarthvadalia26.github.io/QR-Aura/)**
+You can experience the premium aura here: **https://qr-aura.vercel.app/**
 
 ---
 
