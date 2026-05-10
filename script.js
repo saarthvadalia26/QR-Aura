@@ -183,10 +183,16 @@ scanInput.onchange = async (e) => {
         const code = jsQR(imageData.data, imageData.width, imageData.height);
 
         if (code) {
-            scanResult.innerHTML = `<div class="scan-success">
-                <p>Scanned Content:</p>
-                <a href="${code.data}" target="_blank">${code.data}</a>
-            </div>`;
+            scanResult.innerHTML = `
+                <div class="scan-success">
+                    <p>Scanned Content:</p>
+                    <div class="scan-result-link">
+                        <a href="${code.data}" target="_blank">${code.data}</a>
+                        <button onclick="copyToClipboard('${code.data.replace(/'/g, "\\'")}')" class="icon-btn small" title="Copy to Clipboard">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                        </button>
+                    </div>
+                </div>`;
             showNotification("QR Code scanned successfully!", "success");
         } else {
             scanResult.innerHTML = `<p style="color: #ef4444;">Could not detect a QR code. Try a clearer image.</p>`;
@@ -243,16 +249,30 @@ function tick() {
 
         // Ensure we have actual data and it's not a false positive
         if (code && code.data && code.data.trim().length > 0) {
-            scanResult.innerHTML = `<div class="scan-success">
-                <p>Scanned Content:</p>
-                <a href="${code.data}" target="_blank">${code.data}</a>
-            </div>`;
+            scanResult.innerHTML = `
+                <div class="scan-success">
+                    <p>Scanned Content:</p>
+                    <div class="scan-result-link">
+                        <a href="${code.data}" target="_blank">${code.data}</a>
+                        <button onclick="copyToClipboard('${code.data.replace(/'/g, "\\'")}')" class="icon-btn small" title="Copy to Clipboard">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                        </button>
+                    </div>
+                </div>`;
             showNotification("QR Code detected!", "success");
             stopCamera();
             return;
         }
     }
     requestAnimationFrame(tick);
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showNotification("Copied to clipboard!", "success");
+    }).catch(() => {
+        showNotification("Failed to copy.", "error");
+    });
 }
 
 function stopCamera() {
