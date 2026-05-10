@@ -19,10 +19,15 @@ const historyGrid = document.getElementById("historyGrid");
 const clearHistoryBtn = document.getElementById("clearHistory");
 const tabBtns = document.querySelectorAll(".tab-btn");
 const modeContents = document.querySelectorAll(".mode-content");
+const startCameraBtn = document.getElementById("startCamera");
+const cameraVideo = document.getElementById("cameraVideo");
+const cameraPreview = document.getElementById("cameraPreviewContainer");
 
 let history = JSON.parse(localStorage.getItem("qrHistory")) || [];
 let selectedLogo = null;
 let currentMode = "single";
+let scanning = false;
+let videoStream = null;
 
 // Initialize
 renderHistory();
@@ -37,6 +42,9 @@ tabBtns.forEach(btn => {
         const mode = btn.getAttribute("data-mode");
         document.getElementById(`${mode}Mode`).classList.add("active");
         currentMode = mode;
+
+        // Stop camera if leaving scan mode
+        if (mode !== "scan") stopCamera();
 
         // Reset UI for mode
         resultBox.style.display = "none";
@@ -179,6 +187,64 @@ scanInput.onchange = async (e) => {
     };
     reader.readAsDataURL(file);
 };
+
+// --- Live Camera Scanning ---
+startCameraBtn.onclick = async () => {
+    if (scanning) {
+        stopCamera();
+        return;
+    }
+
+    try {
+        videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        cameraVideo.srcObject = videoStream;
+        cameraVideo.setAttribute("playsinline", true);
+        cameraVideo.play();
+        
+        scanning = true;
+        cameraPreview.style.display = "block";
+        startCameraBtn.querySelector("span").innerText = "Stop Camera";
+        requestAnimationFrame(tick);
+    } catch (err) {
+        showNotification("Camera permission denied or not available.", "error");
+    }
+};
+
+function tick() {
+    if (!scanning) return;
+
+    if (cameraVideo.readyState === cameraVideo.HAVE_ENOUGH_DATA) {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = cameraVideo.videoWidth;
+        canvas.height = cameraVideo.videoHeight;
+        ctx.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
+        
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+        if (code) {
+            scanResult.innerHTML = `<div class="scan-success">
+                <p>Scanned Content:</p>
+                <a href="${code.data}" target="_blank">${code.data}</a>
+            </div>`;
+            showNotification("QR Code detected!", "success");
+            stopCamera();
+            return;
+        }
+    }
+    requestAnimationFrame(tick);
+}
+
+function stopCamera() {
+    scanning = false;
+    if (videoStream) {
+        videoStream.getTracks().forEach(track => track.stop());
+        videoStream = null;
+    }
+    cameraPreview.style.display = "none";
+    startCameraBtn.querySelector("span").innerText = "Scan with Camera";
+}
 
 // --- Notifications (Sonner-style) ---
 function showNotification(message, type = "success") {
