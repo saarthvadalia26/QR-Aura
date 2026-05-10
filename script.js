@@ -201,10 +201,17 @@ startCameraBtn.onclick = async () => {
         cameraVideo.setAttribute("playsinline", true);
         cameraVideo.play();
         
+        // Reset results UI
+        scanResult.innerHTML = `<p class="scan-placeholder">Scanning in progress...</p>`;
+        
         scanning = true;
         cameraPreview.style.display = "block";
         startCameraBtn.querySelector("span").innerText = "Stop Camera";
-        requestAnimationFrame(tick);
+        
+        // Wait a bit for the camera to focus before starting scanning loop
+        setTimeout(() => {
+            if (scanning) requestAnimationFrame(tick);
+        }, 500);
     } catch (err) {
         showNotification("Camera permission denied or not available.", "error");
     }
@@ -218,12 +225,16 @@ function tick() {
         const ctx = canvas.getContext("2d");
         canvas.width = cameraVideo.videoWidth;
         canvas.height = cameraVideo.videoHeight;
+        
+        // Clear and draw fresh frame
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
         
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const code = jsQR(imageData.data, imageData.width, imageData.height);
 
-        if (code) {
+        // Ensure we have actual data and it's not a false positive
+        if (code && code.data && code.data.trim().length > 0) {
             scanResult.innerHTML = `<div class="scan-success">
                 <p>Scanned Content:</p>
                 <a href="${code.data}" target="_blank">${code.data}</a>
