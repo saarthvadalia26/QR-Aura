@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
@@ -21,13 +23,48 @@
     <main class="app-container">
         <header>
             <h1>QR <span class="accent">Aura</span></h1>
-            <p>Transform your links into stunning scannable art.</p>
+            <p>The complete scannable toolkit.</p>
         </header>
 
+        <nav class="mode-tabs">
+            <button class="tab-btn active" data-mode="single">Single</button>
+            <button class="tab-btn" data-mode="batch">Batch</button>
+            <button class="tab-btn" data-mode="scan">Scanner</button>
+        </nav>
+
         <section class="generator-card">
-            <div class="input-group">
-                <label for="qrText">Content</label>
-                <input type="text" id="qrText" placeholder="https://example.com or your message" spellcheck="false">
+            <!-- Single Mode -->
+            <div id="singleMode" class="mode-content active">
+                <div class="input-group">
+                    <label for="qrText">Content</label>
+                    <input type="text" id="qrText" placeholder="https://example.com or your message" spellcheck="false">
+                </div>
+            </div>
+
+            <!-- Batch Mode -->
+            <div id="batchMode" class="mode-content">
+                <div class="input-group">
+                    <label for="batchText">Batch Content (One per line)</label>
+                    <textarea id="batchText" placeholder="https://google.com&#10;https://github.com&#10;Custom Message" rows="5"></textarea>
+                </div>
+            </div>
+
+            <!-- Scan Mode -->
+            <div id="scanMode" class="mode-content">
+                <div class="input-group">
+                    <label>Upload QR Image to Scan</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="scanInput" accept="image/*">
+                        <div class="file-btn">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2z"></path><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            <span>Select Image</span>
+                        </div>
+                        <span id="scanFileName" class="file-name">No file chosen</span>
+                    </div>
+                </div>
+                <div id="scanResult" class="scan-result-display">
+                    <p class="scan-placeholder">Results will appear here...</p>
+                </div>
             </div>
 
             <div class="customization-grid">
