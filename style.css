@@ -264,6 +264,20 @@ textarea:focus {
     margin-top: 0.5rem;
 }
 
+.scan-result-link a {
+    color: #818cf8; /* Lighter indigo for better visibility on dark bg */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(129, 140, 248, 0.3);
+    padding-bottom: 1px;
+}
+
+.scan-result-link a:hover {
+    color: #a78bfa; /* Lighter violet/accent */
+    border-bottom-color: #a78bfa;
+}
+
 .icon-btn.small {
     padding: 0.4rem;
     border-radius: 8px;

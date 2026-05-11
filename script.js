@@ -130,7 +130,7 @@ async function createQRUrl(text) {
     const size = parseInt(qrSize.value);
     const fg = fgColor.value.replace("#", "");
     const bg = bgColor.value.replace("#", "");
-    const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}&color=${fg}&bgcolor=${bg}`;
+    const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}&color=${fg}&bgcolor=${bg}&ecc=H`;
 
     // Always use canvas to ensure a local DataURL for reliable downloads
     const canvas = document.createElement("canvas");
